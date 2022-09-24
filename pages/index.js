@@ -3,6 +3,18 @@ import React, { useEffect, useState } from "react";
 import Link from "next/link";
 import styles from "../styles/Home.module.css";
 
+export async function getServerSideProps() {
+  const resp = await fetch(
+    "https://jherr-pokemon.s3.us-west-1.amazonaws.com/index.json"
+  );
+
+  return {
+    props: {
+      pokemon: await resp.json(),
+    },
+  };
+}
+
 export default function Home() {
   const [pokemon, setPokemon] = useState([]);
 
@@ -29,7 +41,7 @@ export default function Home() {
               <a>
                 <img
                   src={`https://jherr-pokemon.s3.us-west-1.amazonaws.com/${pokemon.image}`}
-                  alt={pokemon.name}
+                  alt={pokemon.name.english}
                 />
                 <h3>{pokemon.name}</h3>
               </a>
